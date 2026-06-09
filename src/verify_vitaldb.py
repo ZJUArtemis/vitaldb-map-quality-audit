@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: verify_vitaldb.py | Topic: 10 | Purpose: Verify VitalDB data access

@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: step11_nibp_corrected.py | Topic: 10
@@ -28,10 +28,10 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import roc_auc_score, brier_score_loss
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
-WORK     = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability")
+WORK     = Path(__file__).resolve().parents[1]
 PROC_DIR = WORK / "data" / "processed"
 MET_DIR  = WORK / "outputs" / "metrics"
-RAW      = Path("/home/lxk/vitaldb/physionet.org")
+RAW      = Path("vitaldb_data")  # local VitalDB physionet.org root; override as needed
 for d in [PROC_DIR, MET_DIR]: d.mkdir(parents=True, exist_ok=True)
 assert not str(PROC_DIR.resolve()).startswith(str(RAW.resolve()))
 

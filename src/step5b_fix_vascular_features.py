@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: step5b_fix_vascular_features.py | Topic: 10 | Purpose: Fix and finalize vascular features
@@ -18,8 +18,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from scipy import stats
 
-WORK = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability")
-RAW_DATA = Path("/home/lxk/vitaldb/physionet.org")
+WORK = Path(__file__).resolve().parents[1]
+RAW_DATA = Path("vitaldb_data")  # local VitalDB physionet.org root; override as needed
 
 def init_log():
     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")

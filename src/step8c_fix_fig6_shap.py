@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: step8c_fix_fig6_shap.py | Topic: 10 | Purpose: Regenerate Fig 6 SHAP plot
@@ -19,10 +19,10 @@ from sklearn.ensemble import GradientBoostingClassifier
 import shap
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
-TOPIC_DIR = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability")
+TOPIC_DIR = Path(__file__).resolve().parents[1]
 PROC_DIR  = TOPIC_DIR / "data" / "processed"
 FIG_DIR   = TOPIC_DIR / "outputs" / "figures"
-RAW_DATA  = Path("/home/lxk/vitaldb/physionet.org")
+RAW_DATA  = Path("vitaldb_data")  # local VitalDB physionet.org root; override as needed
 assert not str(FIG_DIR.resolve()).startswith(str(RAW_DATA.resolve()))
 
 # ── Load data ──────────────────────────────────────────────────────────────────

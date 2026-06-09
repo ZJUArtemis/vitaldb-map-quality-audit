@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: step2_induction_segmentation.py | Topic: 10 | Purpose: 自动分割麻醉诱导期 (T_start, T_end)
@@ -12,8 +12,8 @@ from tqdm import tqdm
 import vitaldb
 
 # === PATH SAFETY ===
-RAW_DATA = Path("/home/lxk/vitaldb/physionet.org")
-WORK = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability")
+RAW_DATA = Path("vitaldb_data")  # local VitalDB physionet.org root; override as needed
+WORK = Path(__file__).resolve().parents[1]
 
 def safe_path(p):
     assert not str(Path(p).resolve()).startswith(str(RAW_DATA.resolve()))

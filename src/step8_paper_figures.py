@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: step8_paper_figures.py | Topic: 10 | Purpose: 制作所有发表级论文图表
@@ -27,8 +27,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # ─── PATHS ────────────────────────────────────────────────────────────────────
-RAW_DATA   = Path("/home/lxk/vitaldb/physionet.org")
-WORK       = Path("/home/lxk/vitaldb/analysis")
+RAW_DATA   = Path("vitaldb_data")  # local VitalDB physionet.org root; override as needed
+WORK       = Path(__file__).resolve().parents[1]
 TOPIC_DIR  = WORK / "topic10_induction_instability"
 PROC_DIR   = TOPIC_DIR / "data" / "processed"
 FIG_DIR    = TOPIC_DIR / "outputs" / "figures"

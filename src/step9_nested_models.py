@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: step9_nested_models.py | Topic: 10
@@ -23,11 +23,11 @@ from sklearn.metrics import roc_auc_score, average_precision_score, brier_score_
 from datetime import datetime
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
-WORK     = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability")
+WORK     = Path(__file__).resolve().parents[1]
 PROC_DIR = WORK / "data" / "processed"
 FIG_DIR  = WORK / "outputs" / "figures"
 MET_DIR  = WORK / "outputs" / "metrics"
-RAW      = Path("/home/lxk/vitaldb/physionet.org")
+RAW      = Path("vitaldb_data")  # local VitalDB physionet.org root; override as needed
 for d in [FIG_DIR, MET_DIR]: d.mkdir(parents=True, exist_ok=True)
 assert not str(FIG_DIR.resolve()).startswith(str(RAW.resolve()))
 

@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: step8b_tables_shap.py | Topic: 10
@@ -13,10 +13,10 @@ import matplotlib.pyplot as plt
 from scipy import stats
 from scipy.stats import chi2_contingency
 
-RAW_DATA  = Path("/home/lxk/vitaldb/physionet.org")
-PROC_DIR  = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability/data/processed")
-FIG_DIR   = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability/outputs/figures")
-MET_DIR   = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability/outputs/metrics")
+RAW_DATA  = Path("vitaldb_data")  # local VitalDB physionet.org root; override as needed
+PROC_DIR  = (Path(__file__).resolve().parents[1] / "data" / "processed")
+FIG_DIR   = (Path(__file__).resolve().parents[1] / "outputs" / "figures")
+MET_DIR   = (Path(__file__).resolve().parents[1] / "outputs" / "metrics")
 
 # ── Load data ──────────────────────────────────────────────────────────────────
 feat   = pd.read_parquet(PROC_DIR / "vascular_features.parquet")

@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: step1_cohort_selection.py | Topic: 10 | Purpose: 队列筛选与纳排标准应用
@@ -12,8 +12,8 @@ import vitaldb
 from tqdm import tqdm
 
 # === PATH SAFETY ===
-RAW_DATA = Path("/home/lxk/vitaldb/physionet.org")
-WORK = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability")
+RAW_DATA = Path("vitaldb_data")  # local VitalDB physionet.org root; override as needed
+WORK = Path(__file__).resolve().parents[1]
 
 def safe_path(p):
     assert not str(Path(p).resolve()).startswith(str(RAW_DATA.resolve()))

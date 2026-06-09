@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Module: vitaldb_utils.py | Topic: 10 | Purpose: Unified VitalDB data loading utilities

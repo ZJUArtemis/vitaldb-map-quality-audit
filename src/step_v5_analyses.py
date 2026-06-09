@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: step_v5_analyses.py | Topic: 10
@@ -23,9 +23,9 @@ from sklearn.metrics import roc_auc_score
 np.random.seed(42)
 rng = np.random.default_rng(42)
 
-PROC = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability/data/processed")
-FIG  = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability/outputs/figures")
-MET  = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability/outputs/metrics")
+PROC = (Path(__file__).resolve().parents[1] / "data" / "processed")
+FIG  = (Path(__file__).resolve().parents[1] / "outputs" / "figures")
+MET  = (Path(__file__).resolve().parents[1] / "outputs" / "metrics")
 
 # ── Load data ─────────────────────────────────────────────────────────────────
 feat = pd.read_parquet(PROC / "vascular_features.parquet")

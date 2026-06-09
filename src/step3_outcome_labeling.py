@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: step3_outcome_labeling.py | Topic: 10 | Purpose: 定义并标注 Induction Crash 结局
@@ -11,8 +11,8 @@ import vitaldb
 from tqdm import tqdm
 
 # === PATH SAFETY ===
-RAW_DATA = Path("/home/lxk/vitaldb/physionet.org")
-WORK = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability")
+RAW_DATA = Path("vitaldb_data")  # local VitalDB physionet.org root; override as needed
+WORK = Path(__file__).resolve().parents[1]
 
 def safe_path(p):
     assert not str(Path(p).resolve()).startswith(str(RAW_DATA.resolve()))

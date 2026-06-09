@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: step6_risk_modeling.py | Topic: 10 | Purpose: Phase 5 风险分层建模
@@ -32,8 +32,8 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 
-RAW_DATA = Path("/home/lxk/vitaldb/physionet.org")
-WORK = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability")
+RAW_DATA = Path("vitaldb_data")  # local VitalDB physionet.org root; override as needed
+WORK = Path(__file__).resolve().parents[1]
 
 def safe_path(p):
     assert not str(Path(p).resolve()).startswith(str(RAW_DATA.resolve()))

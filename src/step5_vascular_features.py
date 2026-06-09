@@ -1,4 +1,4 @@
-#!/home/lxk/anaconda3/envs/ana/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script: step5_vascular_features.py | Topic: 10 | Purpose: 血管弹性特征提取 (ABP + PPG)
@@ -18,8 +18,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 # === PATH SAFETY ===
-RAW_DATA = Path("/home/lxk/vitaldb/physionet.org")
-WORK = Path("/home/lxk/vitaldb/analysis/topic10_induction_instability")
+RAW_DATA = Path("vitaldb_data")  # local VitalDB physionet.org root; override as needed
+WORK = Path(__file__).resolve().parents[1]
 VITAL_FILES_DIR = RAW_DATA / "files" / "vitaldb" / "1.0.0" / "vital_files"
 
 def load_local_case(caseid, tracks, interval):

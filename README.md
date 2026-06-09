@@ -73,12 +73,18 @@ build is sufficient (no GPU required for any analysis in this paper).
 
 ## Reproducing the analysis
 
-Run the scripts in `src/` in numerical order. **Note:** the scripts currently use
-absolute output paths under the original author workspace
-(`/home/lxk/vitaldb/analysis/...`); adjust the `WORK` / output-path constants near
-the top of each script to your local directory before running. Each script writes
-intermediate `.parquet` files (regenerated locally, not shipped) and the aggregate
-tables/figures found under `results/`.
+Run the scripts in `src/` in numerical order. Output paths are resolved
+**relative to the repository root** (`Path(__file__).resolve().parents[1]`), so the
+scripts can be run from a clone without editing any paths. Intermediate
+`data/` and `outputs/` directories are created automatically on first run.
+
+The location of the local VitalDB raw files (only needed if you point the
+pipeline at a downloaded copy rather than streaming via the `vitaldb` package)
+defaults to `./vitaldb_data`; override the `RAW_DATA` / `RAW` constant near the
+top of the relevant script if your copy lives elsewhere.
+
+Each script writes intermediate `.parquet` files (regenerated locally, not
+shipped) and the aggregate tables/figures found under `results/`.
 
 A typical end-to-end run:
 
