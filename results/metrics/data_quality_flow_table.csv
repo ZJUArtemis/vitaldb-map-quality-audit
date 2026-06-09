@@ -1,0 +1,7 @@
+step,n,note
+1. Induction segments (from step1-2),910,"propofol+ABP+PPG, ≥10 min induction"
+2. With SNUADC/ART waveform data,898,continuous arterial BP waveform present
+3. Valid pre-induction baseline MAP,105,≥30s valid 20-200 mmHg in 5-min baseline window
+4. Valid induction nadir MAP,796,≥30s valid 20-200 mmHg in 10-min induction window
+5. Relative-drop cohort (baseline AND nadir valid),102,crash_30/20/40 evaluable
+   crash_30=1,24,relative MAP drop ≥30% within 10 min

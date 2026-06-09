@@ -1,0 +1,20 @@
+# Patient-level derived data — NOT redistributed (regenerate from VitalDB via src/)
+data/
+*.parquet
+
+# Logs and run artefacts
+*.log
+outputs/logs/
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+env/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/

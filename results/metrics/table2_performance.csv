@@ -1,0 +1,6 @@
+Model,AUROC,AUROC 95% CI,AUPRC,AUPRC 95% CI,Brier Score
+MAP<80 clinical rule,0.361,[0.307-0.415],0.21,[0.166-0.257],0.8205
+LR Model A (clinical only),0.53,[0.454-0.612],0.289,[0.211-0.390],0.1869
+LR Model B (+vascular features),0.927,[0.883-0.959],0.869,[0.792-0.917],0.1110
+LR Model C (+PI),0.925,[0.880-0.958],0.863,[0.786-0.914],0.1114
+XGBoost (+vascular features),0.948,[0.909-0.978],0.911,[0.853-0.953],0.0632

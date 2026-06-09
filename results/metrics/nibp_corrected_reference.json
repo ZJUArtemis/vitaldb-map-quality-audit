@@ -1,0 +1,39 @@
+{
+  "n_total": 910,
+  "valid_nibp_baseline": 664,
+  "valid_nibp_baseline_pct": 73.0,
+  "baseline_median": 101.0,
+  "baseline_iqr": [
+    91.0,
+    113.0
+  ],
+  "baseline_plausible_60_120_pct": 86.6,
+  "evaluable": 664,
+  "crash30_n": 260,
+  "crash30_pct": 39.2,
+  "crash_abs_pct": 28.6,
+  "model_cohort_n": 655,
+  "model_events": 255,
+  "test_n": 197,
+  "test_events": 77,
+  "models": {
+    "M0: Clinical only": {
+      "auroc": 0.604,
+      "lo": 0.522,
+      "hi": 0.678,
+      "brier": 0.23
+    },
+    "M1: Clinical + MAP": {
+      "auroc": 0.633,
+      "lo": 0.547,
+      "hi": 0.705,
+      "brier": 0.225
+    },
+    "M3: Clinical + MAP + RI": {
+      "auroc": 0.634,
+      "lo": 0.549,
+      "hi": 0.707,
+      "brier": 0.226
+    }
+  }
+}

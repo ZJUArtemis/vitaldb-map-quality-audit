@@ -1,0 +1,9 @@
+feature,display_name,mean_abs_shap
+baseline_map,Baseline MAP (mmHg),4.296028619884461
+age,Age (years),0.2593414864820283
+ppg_amp_clean,PPG Amplitude,0.2388258547287562
+bmi,BMI (kg/m²),0.20429456815967018
+preop_dm,Pre-op Diabetes Mellitus,0.19546295444709727
+ri_mean_clean,Reflection Index (PPG),0.13360246729769057
+preop_htn,Pre-op Hypertension,0.041110072253767616
+asa,ASA Physical Status,0.02508018585558276
