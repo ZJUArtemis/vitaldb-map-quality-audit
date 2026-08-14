@@ -1,0 +1,15 @@
+{
+  "track_eligible_cases": 926,
+  "propofol_defined_fixed_window_cases": 926,
+  "legacy_segment_cases": 910,
+  "legacy_cases_in_fixed_window_source": 910,
+  "fixed_window_cases_absent_from_legacy_segmentation": 16,
+  "primary_audit_reads_legacy_segmentation": false,
+  "primary_onset_representation": "absolute timestamp of first positive PPF20_RATE record",
+  "legacy_relative_onset_not_compared": true,
+  "legacy_duration_s": {
+    "minimum": 1200.0,
+    "maximum": 1200.0
+  },
+  "full_recomputation_completed": true
+}
