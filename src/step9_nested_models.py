@@ -5,7 +5,6 @@ Script: step9_nested_models.py | Topic: 10
 Purpose: Decompose incremental contributions of baseline MAP vs RI vs PPG amplitude
          using nested logistic regression models. Also produces clean sensitivity
          analysis excluding inf/corrupt drop_pct cases.
-Response to reviewer Issue 1, 2, 3.
 """
 import warnings; warnings.filterwarnings('ignore')
 import logging, json

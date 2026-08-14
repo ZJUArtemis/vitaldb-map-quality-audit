@@ -1,0 +1,76 @@
+{
+  "observed_both_ge80_n": 339,
+  "primary_numerical": {
+    "lower_bound_mmHg": 20.0,
+    "observed_coverage_threshold": 0.8,
+    "inrange_fraction_threshold": 0.8,
+    "continuity_seconds": 0.0,
+    "retained_n": 9.0,
+    "labelled_n": 9.0,
+    "events": 5.0,
+    "non_events": 4.0,
+    "event_rate": 0.5555555555555556
+  },
+  "primary_time_valid": {
+    "range_mmHg": "20-200",
+    "observed_coverage_threshold": 0.8,
+    "inrange_fraction_threshold": 0.8,
+    "continuity_seconds": 60,
+    "retained_n": 9,
+    "events": 5,
+    "non_events": 4
+  },
+  "raw": {
+    "source_segments": 910,
+    "successfully_processed": 910,
+    "processing_errors": 0,
+    "primary_criteria": {
+      "range_mmHg": "20-200",
+      "observed_coverage_threshold": 0.8,
+      "inrange_fraction_threshold": 0.8,
+      "continuity_seconds": 60,
+      "retained_n": 9,
+      "events": 5,
+      "non_events": 4
+    },
+    "lb20_operational_grid_run60_retained_range": [
+      7,
+      14
+    ],
+    "raw_track_present_n": 833,
+    "raw_baseline_any_observed_n": 829,
+    "raw_baseline_any_pulsatile_n": 80,
+    "raw_baseline_observed_ge50_n": 534,
+    "raw_baseline_observed_ge80_n": 414,
+    "raw_baseline_pulsatile_ge50_n": 14,
+    "raw_baseline_pulsatile_ge80_n": 11,
+    "median_raw_baseline_observed_fraction_all": 0.6833333333333333,
+    "median_raw_baseline_pulsatile_fraction_all": 0.0,
+    "numeric_raw_overlap_ge30_n": 684,
+    "median_numeric_raw_corr": 0.6573000488534196,
+    "median_numeric_raw_mae_mmHg": 6.485407188578693,
+    "raw_amplitude_sensitivity": {
+      "3": {
+        "any_pulsatile_n": 81,
+        "pulsatile_ge80_n": 11,
+        "median_pulsatile_fraction_all": 0.0
+      },
+      "5": {
+        "any_pulsatile_n": 80,
+        "pulsatile_ge80_n": 11,
+        "median_pulsatile_fraction_all": 0.0
+      },
+      "10": {
+        "any_pulsatile_n": 78,
+        "pulsatile_ge80_n": 11,
+        "median_pulsatile_fraction_all": 0.0
+      }
+    },
+    "numeric_native_cadence_s": {
+      "median": 2.0,
+      "minimum": 1.9930000305175781,
+      "maximum": 2.046999931335449,
+      "within_0_05_s_of_2_s_n": 910
+    }
+  }
+}

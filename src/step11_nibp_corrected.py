@@ -2,15 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 Script: step11_nibp_corrected.py | Topic: 10
-Purpose: NIBP-based CORRECTED reference arm for the data-quality audit.
-         Solar8000/ART_MBP (and SNUADC/ART) have no valid PRE-induction baseline
-         because the arterial line is placed during/after induction in most TIVA
-         cases. The non-invasive oscillometric cuff (Solar8000/NIBP_MBP) IS valid
-         pre-induction. This script:
-           1. Derives a physiologically valid pre-induction baseline MAP from NIBP.
-           2. Reports the baseline distribution + corrected crash-30 event rate.
+Purpose: Independent NIBP reference analysis for the data-quality audit.
+         This script does not infer arterial-catheter placement or connection
+         timing. It:
+           1. Derives a physiologically plausible pre-induction MAP from NIBP.
+           2. Reports its distribution and relative-decrease event rate.
            3. Refits M0/M1/M3 on the NIBP-evaluable cohort (same pipeline as step9).
-         Output: reference numbers for the manuscript's corrected arm.
+         Output: aggregate results for the independent NIBP reference analysis.
 """
 import warnings; warnings.filterwarnings('ignore')
 import logging, json

@@ -4,7 +4,7 @@
 Script: step_v5_analyses.py | Topic: 10
 Purpose: Compute CIs for validity-indicator, complete-case, full-cohort analyses;
          validity threshold sensitivity (10/20/30 mmHg);
-         baseline/nadir MAP distribution figure for manuscript v5.
+         baseline/nadir MAP distribution figure used in the report.
 """
 import warnings; warnings.filterwarnings('ignore')
 import numpy as np
