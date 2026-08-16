@@ -32,7 +32,10 @@ contains the same empirical pattern.
 
 ## Reproducibility release
 
-The submission-frozen release is tagged `ieee-access-resubmission-v5`.
+The submission-frozen document-consistency release is tagged
+`ieee-access-resubmission-v6`. The underlying fixed-window analysis remains
+identified as v5 because v6 changes reporting consistency and terminology, not
+the locked analysis or aggregate results.
 
 ```text
 src/revision_v5_fixed_window_validity_audit.py
@@ -60,7 +63,7 @@ src/
 results/
   metrics/                                Aggregate legacy model outputs
   figures/                                Earlier publication figures
-  revision_v5/                            Frozen v5 aggregate outputs
+  revision_v5/                            Frozen fixed-window aggregate outputs
 ```
 
 ## Data and ethics metadata
@@ -93,7 +96,7 @@ python src/step1_cohort_selection.py
 python src/revision_v5_fixed_window_validity_audit.py --workers 6
 ```
 
-The v5 script:
+The fixed-window script:
 
 - independently reconstructs propofol-defined induction onset;
 - measures numeric coverage against complete fixed windows;
