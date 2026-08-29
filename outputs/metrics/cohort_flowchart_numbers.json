@@ -1,0 +1,8 @@
+{
+  "total": 3494,
+  "age_18_plus": 3483,
+  "general_anesthesia": 3412,
+  "exclude_cardiac": 2434,
+  "has_demographics": 2434,
+  "has_required_tracks": 926
+}

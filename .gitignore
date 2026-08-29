@@ -1,0 +1,34 @@
+# Public-release hygiene — never distribute raw or patient-level data
+*.vital
+*.parquet
+*.pkl
+*.pth
+*.ckpt
+*.log
+*.pyc
+*.pyo
+__pycache__/
+.venv/
+env/
+.ipynb_checkpoints/
+
+# Locally generated analysis outputs (regenerated from public VitalDB data)
+results/
+data/
+figures/
+outputs/logs/
+outputs/figures/
+outputs/ri_v14/
+outputs/configs/
+outputs/metrics/*
+!outputs/metrics/eligible_caseids.csv
+!outputs/metrics/track_availability.csv
+!outputs/metrics/cohort_flowchart_numbers.json
+analysis_outputs/
+latex_source/
+vitaldb_data/
+
+# Local tooling
+.DS_Store
+.coverage
+.pytest_cache/

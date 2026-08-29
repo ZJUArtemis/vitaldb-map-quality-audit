@@ -1,0 +1,185 @@
+#!/usr/bin/env python3
+"""Hygiene and portability gate for the code-only v14 release.
+
+This validator checks archive structure only. It performs no scientific
+result assertions because no result files are distributed; manuscript
+numbers are regenerated locally by the analysis scripts.
+"""
+
+from __future__ import annotations
+
+import ast
+import json
+import warnings
+from pathlib import Path
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parent
+
+REQUIRED = (
+    "README.md",
+    "LICENSE",
+    "PUBLICATION_MANIFEST_V14.md",
+    "requirements-core.txt",
+    "requirements-full.txt",
+    "environment-lock-v14.txt",
+    ".gitignore",
+    "src/project_paths.py",
+    "src/vitaldb_utils.py",
+    "src/fixed_window_validity_audit.py",
+    "src/native_coverage_audit.py",
+    "src/broader_arterial_cohort_audit.py",
+    "src/cadence_window_sensitivity_audit.py",
+    "src/fem_waveform_audit.py",
+    "src/ri_reextract.py",
+    "src/validate_ri_release.py",
+    "src/render_ri_waveform_qc.py",
+    "src/regenerate_ri_models.py",
+    "src/generate_canonical_metrics.py",
+    "src/generate_nibp_metrics.py",
+    "src/generate_subgroup_figure.py",
+    "src/regenerate_nibp_reference_figure.py",
+    "src/nibp_sampling_audit.py",
+    "src/arc_consequence_analysis.py",
+    "src/internal_validation_analysis.py",
+    "src/step1_cohort_selection.py",
+    "src/step2_induction_segmentation.py",
+    "src/step3_outcome_labeling.py",
+    "src/step5_vascular_features.py",
+    "src/step5b_fix_vascular_features.py",
+    "src/step6_risk_modeling.py",
+    "src/step7_sensitivity_analysis.py",
+    "src/step8b_tables_shap.py",
+    "src/step11_nibp_corrected.py",
+    "src/step12_repeated_split_stability.py",
+    "src/step13_fig3_arc_nested_roc.py",
+    "outputs/metrics/eligible_caseids.csv",
+    "outputs/metrics/track_availability.csv",
+    "outputs/metrics/cohort_flowchart_numbers.json",
+)
+
+# Historical development-versioned script names must not reappear.
+RETIRED_NAMES = (
+    "revision_v5_fixed_window_validity_audit.py",
+    "audit_native_numeric_coverage_v9.py",
+    "audit_broader_arterial_cohort_v9.py",
+    "audit_cadence_window_v8.py",
+    "audit_fem_waveform_v7.py",
+    "generate_canonical_publication_metrics_v9.py",
+    "generate_nibp_model_metrics_v10.py",
+    "generate_subgroup_figure_v9.py",
+    "regenerate_nibp_reference_figure_v13.py",
+    "regenerate_ri_models_v14.py",
+    "render_ri_waveform_qc_v14.py",
+    "ri_reextract_v14.py",
+    "validate_ri_release_v14.py",
+    "step_v5_analyses.py",
+    "step_v6_analyses.py",
+)
+
+FORBIDDEN_SUFFIXES = {".vital", ".parquet", ".pkl", ".pth", ".ckpt", ".log", ".pyc"}
+FORBIDDEN_NAMES = {"__pycache__", ".venv", "env", ".ipynb_checkpoints"}
+FORBIDDEN_TEXT = (
+    "/" + "home/lxk", "xk" + "luan", "gh" + "p_", "github" + "_pat_",
+    "BEGIN " + "PRIVATE KEY",
+)
+
+
+def main() -> None:
+    all_paths = [
+        path for path in ROOT.rglob("*")
+        if path.is_file() and ".git" not in path.parts
+    ]
+
+    # --- Distributed-artifact hygiene ---
+    forbidden = [
+        path.relative_to(ROOT).as_posix()
+        for path in all_paths
+        if path.name in FORBIDDEN_NAMES or path.suffix.lower() in FORBIDDEN_SUFFIXES
+    ]
+    assert not forbidden, f"Forbidden data/cache artifacts: {forbidden}"
+    assert not (ROOT / "figures").exists(), "Code-only release must not contain figures/"
+    assert not (ROOT / "results").exists(), "Code-only release must not contain results/"
+    assert not (ROOT / "data").exists(), "Code-only release must not contain data/"
+
+    metrics_allowed = {
+        "eligible_caseids.csv", "track_availability.csv",
+        "cohort_flowchart_numbers.json",
+    }
+    stray = [
+        path.relative_to(ROOT).as_posix()
+        for path in (ROOT / "outputs").rglob("*")
+        if path.is_file() and path.name not in metrics_allowed
+    ]
+    assert not stray, f"Unexpected files under outputs/: {stray}"
+
+    # --- Credential and author-path scan ---
+    text_hits = []
+    for path in all_paths:
+        if path.suffix.lower() in {".py", ".md", ".txt", ".json", ".csv"} or path.name == ".gitignore":
+            text = path.read_text(errors="replace")
+            for marker in FORBIDDEN_TEXT:
+                if marker in text:
+                    text_hits.append(f"{path.relative_to(ROOT)}: {marker}")
+    assert not text_hits, f"Credential or author-path pattern found: {text_hits}"
+
+    # --- Required files and retired names ---
+    missing = [name for name in REQUIRED if not (ROOT / name).is_file()]
+    assert not missing, f"Missing required files: {missing}"
+    retired = [
+        path.relative_to(ROOT).as_posix()
+        for path in all_paths if path.name in RETIRED_NAMES
+    ]
+    assert not retired, f"Retired versioned filenames present: {retired}"
+    stale_refs = []
+    for path in all_paths:
+        if path.name == "CHECKSUMS_SHA256.txt":
+            continue
+        if path.suffix.lower() in {".py", ".md"}:
+            text = path.read_text(errors="replace")
+            for name in RETIRED_NAMES:
+                if name in text and path.name != "validate_release.py":
+                    stale_refs.append(f"{path.relative_to(ROOT)}: {name}")
+    assert not stale_refs, f"Stale references to retired filenames: {stale_refs}"
+
+    # --- Cohort metadata schemas (identifiers and aggregates only) ---
+    identifiers = pd.read_csv(ROOT / "outputs/metrics/eligible_caseids.csv")
+    assert identifiers.columns.tolist() == ["caseid"]
+    assert len(identifiers) == 926 and identifiers.caseid.nunique() == 926
+
+    tracks = pd.read_csv(ROOT / "outputs/metrics/track_availability.csv")
+    assert tracks.columns.tolist() == [
+        "caseid", "has_abp", "has_ppg", "has_propofol", "all_required",
+    ]
+    assert tracks.caseid.is_unique
+    assert set(identifiers.caseid) <= set(tracks.caseid)
+
+    flowchart = json.loads(
+        (ROOT / "outputs/metrics/cohort_flowchart_numbers.json").read_text()
+    )
+    assert all(isinstance(v, int) for v in flowchart.values())
+    assert flowchart["has_required_tracks"] == 926
+
+    # --- Source portability ---
+    for path in sorted((ROOT / "src").glob("*.py")):
+        source = path.read_text()
+        ast.parse(source, filename=str(path))
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", SyntaxWarning)
+            compile(source, str(path), "exec")
+        assert source.startswith("#!/usr/bin/env python3"), f"Non-portable shebang: {path.name}"
+
+    # --- README describes the code-only scope accurately ---
+    readme = (ROOT / "README.md").read_text()
+    assert "requirements-core.txt" in readme and "requirements-full.txt" in readme
+    assert "environment-lock-v14.txt" in readme
+    assert "ieee-access-resubmission-v14" in readme
+    assert "gap-aware" in readme and "same-pulse" in readme
+    assert "code-only release" in readme.lower()
+    assert "primary task-window validity audit can be regenerated" in readme.lower()
+    print("Code-only v14 release validation: PASS")
+
+
+if __name__ == "__main__":
+    main()
