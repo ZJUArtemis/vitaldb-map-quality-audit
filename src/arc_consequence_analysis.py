@@ -189,7 +189,7 @@ fig.suptitle('Distribution of Baseline and Nadir MAP Values in the ARC\n'
 fig.tight_layout()
 fig.savefig(FIG / "fig2_map_distribution.png", dpi=300, bbox_inches='tight')
 fig.savefig(FIG / "fig2_map_distribution.pdf", bbox_inches='tight')
-print(f"Saved: {FIG}/fig2_map_distribution.png")
+print(f"Saved: {FIG / 'fig2_map_distribution.png'}")
 plt.close()
 
 print("\n=== Done ===")

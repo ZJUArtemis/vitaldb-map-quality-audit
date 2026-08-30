@@ -1,4 +1,4 @@
-# Task-Window Validity Audit — v14 Analysis Code Release
+# Task-Window Validity Audit — v15 Submission Code Release
 
 This repository accompanies the IEEE Access resubmission titled **“Task-Window
 Validity of Pre-Induction Arterial Pressure for Hypotension Modelling in
@@ -16,8 +16,9 @@ VitalDB source data.
 
 ## Frozen release
 
-- Submission package: v14
-- Repository tag: `ieee-access-resubmission-v14`
+- Submission package: v15
+- Repository tag: `ieee-access-resubmission-v15`
+- Scientific analysis generation: v14 (unchanged in v15)
 
 Headline results reported in the manuscript (for context only; the files
 carrying them are generated locally, not distributed here):
@@ -68,7 +69,9 @@ python -m pip install -r requirements-full.txt
 
 `requirements-core.txt` and `requirements-full.txt` specify portable minimum
 versions. `environment-lock-v14.txt` records the exact package versions in the
-Python 3.10.19 environment used for the frozen v14 verification; hardware- or
+Python 3.10.19 environment used for the frozen v14 scientific verification;
+the v15 release changes documentation and a non-computational status message,
+not any analysis. Hardware- or
 index-specific build suffixes are recorded for provenance and need not be
 reproduced when compatible wheels are unavailable.
 
