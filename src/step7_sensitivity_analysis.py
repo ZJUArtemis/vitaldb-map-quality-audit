@@ -6,7 +6,7 @@ Script: step7_sensitivity_analysis.py | Topic: 10 | Purpose: Phase 6 敏感性�
 - Step 6.2: 亚组分析 (年龄/性别/BMI/ASA/高血压) + Forest Plot
 - Step 6.3: Age × baseline_map 交互作用分析
 """
-import json, logging, warnings
+import logging, warnings
 warnings.filterwarnings('ignore')
 from datetime import datetime
 from pathlib import Path
@@ -16,7 +16,6 @@ from scipy import stats
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
@@ -24,7 +23,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score, average_precision_score, brier_score_loss
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-import xgboost as xgb
 from project_paths import PHYSIONET_ROOT, PROJECT_ROOT
 
 RAW_DATA = PHYSIONET_ROOT
@@ -304,7 +302,6 @@ def main():
             ax.scatter(sub['baseline_map'], sub['drop_pct'],
                       alpha=0.3, s=8, color=colors_age[gname], label=f'{gname} (n={len(sub)})')
             # Regression line
-            from numpy.polynomial import polynomial as P
             mask_v = sub['baseline_map'].notna() & sub['drop_pct'].notna()
             if mask_v.sum() > 5:
                 x_sorted = np.sort(sub.loc[mask_v, 'baseline_map'].values)

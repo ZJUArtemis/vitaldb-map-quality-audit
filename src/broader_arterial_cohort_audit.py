@@ -13,7 +13,6 @@ import argparse
 import importlib.util
 import json
 import multiprocessing as mp
-import os
 from pathlib import Path
 
 import numpy as np
@@ -21,18 +20,13 @@ import pandas as pd
 import vitaldb
 
 
-HERE = Path(__file__).resolve()
-PROJECT = Path(os.environ.get(
-    "TOPIC10_PROJECT_ROOT",
-    HERE.parents[1] if (HERE.parents[1] / "outputs").exists() else HERE.parents[3],
-))
-OUT = Path(__file__).resolve().parent
-TRACKS = PROJECT / "outputs/metrics/track_availability.csv"
-PRIMARY = PROJECT / "outputs/metrics/revision_v5_fixed_window_case_results.csv"
-DEFAULT_VITAL_DIR = PROJECT.parents[1] / "physionet.org/files/vitaldb/1.0.0/vital_files"
-if not DEFAULT_VITAL_DIR.exists():
-    DEFAULT_VITAL_DIR = PROJECT / "vitaldb_data"
-VITAL_DIR = Path(os.environ.get("VITALDB_VITAL_DIR", DEFAULT_VITAL_DIR))
+from project_paths import METRICS_DIR, VITAL_DIR
+
+
+SOURCE_DIR = Path(__file__).resolve().parent
+OUT = METRICS_DIR
+TRACKS = METRICS_DIR / "track_availability.csv"
+PRIMARY = METRICS_DIR / "revision_v5_fixed_window_case_results.csv"
 CACHE = OUT / "broader_arterial_v9_cache"
 
 
@@ -54,7 +48,7 @@ def onset(caseid: int):
 
 
 def load_native_module():
-    path = OUT / "native_coverage_audit.py"
+    path = SOURCE_DIR / "native_coverage_audit.py"
     spec = importlib.util.spec_from_file_location("native_coverage", path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)

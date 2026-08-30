@@ -5,24 +5,22 @@ Script: step6_risk_modeling.py | Topic: 10 | Purpose: Phase 5 风险分层建模
 Models: Logistic Regression (A/B/C) + XGBoost + MLP
 Evaluation: AUROC/AUPRC bootstrap CI, Calibration, DCA, SHAP
 """
-import os, sys, json, logging, gc, warnings
+import json, logging, warnings
 warnings.filterwarnings('ignore')
 from datetime import datetime
 from pathlib import Path
 import numpy as np
 import pandas as pd
-from scipy import stats
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
 
 # ML
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
 from sklearn.metrics import (roc_auc_score, average_precision_score, brier_score_loss,
-                              roc_curve, precision_recall_curve)
+                              roc_curve)
 from sklearn.calibration import calibration_curve
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
@@ -30,7 +28,6 @@ import xgboost as xgb
 import shap
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, TensorDataset
 from project_paths import PHYSIONET_ROOT, PROJECT_ROOT
 
 RAW_DATA = PHYSIONET_ROOT
@@ -81,12 +78,10 @@ def train_mlp(X_train, y_train, X_val, y_val, n_features, epochs=100, lr=1e-3):
     model = InductionRiskMLP(n_features).to(device)
     opt = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4)
     criterion = nn.BCELoss()
-    pos_weight = (y_train==0).sum() / (y_train==1).sum()
 
     Xt = torch.FloatTensor(X_train).to(device)
     yt = torch.FloatTensor(y_train).to(device)
     Xv = torch.FloatTensor(X_val).to(device)
-    yv = torch.FloatTensor(y_val).to(device)
 
     best_val_auc, best_state, patience, wait = 0, None, 15, 0
     for epoch in range(epochs):

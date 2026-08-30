@@ -17,8 +17,6 @@ results are retained only as a consequence/noisy-label demonstration.
 from __future__ import annotations
 
 import json
-import os
-from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
@@ -32,12 +30,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
+from project_paths import FIGURES_DIR, METRICS_DIR, PROCESSED_DIR
 
-HERE = Path(__file__).resolve()
-DEFAULT_ROOT = HERE.parents[1] if (HERE.parents[1] / "outputs").exists() else HERE.parents[3]
-ROOT = Path(os.environ.get("TOPIC10_PROJECT_ROOT", DEFAULT_ROOT))
-PROC = ROOT / "data" / "processed"
-OUT = Path(__file__).resolve().parent
+PROC = PROCESSED_DIR
+OUT = METRICS_DIR
+FIG = FIGURES_DIR
 CLINICAL = ["age", "bmi", "asa", "preop_htn", "preop_dm"]
 MODEL_SPECS = {
     "M0: Clinical only": CLINICAL,
@@ -103,6 +100,7 @@ def serialisable(result: dict) -> dict:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
+    FIG.mkdir(parents=True, exist_ok=True)
     features = pd.read_parquet(PROC / "vascular_features.parquet")
     arc = features[
         features["drop_pct"].notna()
@@ -137,7 +135,7 @@ def main() -> None:
 
     # Full-cohort baseline-waveform availability: absent raw tracks contribute
     # zero support because the denominator is all 926 fixed task windows.
-    case_path = ROOT / "outputs" / "metrics" / "revision_v5_fixed_window_case_results.csv"
+    case_path = METRICS_DIR / "revision_v5_fixed_window_case_results.csv"
     cases = pd.read_csv(case_path)
     observed = cases["raw_baseline_observed_fraction"].fillna(0).to_numpy(float)
     observed_summary = {
@@ -173,8 +171,8 @@ def main() -> None:
     ax.set(xlabel="1 - Specificity", ylabel="Sensitivity", title="Original-Pipeline Noisy-Label Reference")
     ax.legend(loc="lower right", fontsize=7)
     fig.tight_layout()
-    fig.savefig(OUT / "suppfig2_noisy_label_roc_v9.pdf")
-    fig.savefig(OUT / "suppfig2_noisy_label_roc_v9.png", dpi=300)
+    fig.savefig(FIG / "suppfig2_noisy_label_roc_v9.pdf")
+    fig.savefig(FIG / "suppfig2_noisy_label_roc_v9.png", dpi=300)
     plt.close(fig)
 
     table = pd.DataFrame(threshold_rows)
@@ -189,8 +187,8 @@ def main() -> None:
     ax.set_xticks(x)
     ax.grid(alpha=0.2)
     fig.tight_layout()
-    fig.savefig(OUT / "suppfig1_threshold_m1_v9.pdf")
-    fig.savefig(OUT / "suppfig1_threshold_m1_v9.png", dpi=300)
+    fig.savefig(FIG / "suppfig1_threshold_m1_v9.pdf")
+    fig.savefig(FIG / "suppfig1_threshold_m1_v9.png", dpi=300)
     plt.close(fig)
 
     print(json.dumps(frozen, indent=2))

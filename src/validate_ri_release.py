@@ -4,16 +4,15 @@
 from __future__ import annotations
 
 import importlib.util
-import os
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
+from project_paths import RI_OUTPUT_DIR
 
 HERE = Path(__file__).resolve().parent
-PROJECT = Path(os.environ.get("TOPIC10_PROJECT_ROOT", HERE.parent))
-OUT = Path(os.environ.get("TOPIC10_OUTPUT_DIR", PROJECT / "outputs" / "ri_v14"))
+OUT = RI_OUTPUT_DIR
 
 
 def load_extractor():

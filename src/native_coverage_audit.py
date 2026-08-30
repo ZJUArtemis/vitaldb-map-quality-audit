@@ -13,25 +13,15 @@ from __future__ import annotations
 import argparse
 import json
 import multiprocessing as mp
-import os
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import vitaldb
 
+from project_paths import METRICS_DIR, VITAL_DIR
 
-HERE = Path(__file__).resolve()
-PROJECT = Path(os.environ.get(
-    "TOPIC10_PROJECT_ROOT",
-    HERE.parents[1] if (HERE.parents[1] / "outputs").exists() else HERE.parents[3],
-))
-DEFAULT_VITAL_DIR = PROJECT.parents[1] / "physionet.org/files/vitaldb/1.0.0/vital_files"
-if not DEFAULT_VITAL_DIR.exists():
-    DEFAULT_VITAL_DIR = PROJECT / "vitaldb_data"
-VITAL_DIR = Path(os.environ.get("VITALDB_VITAL_DIR", DEFAULT_VITAL_DIR))
-SOURCE = PROJECT / "outputs/metrics/revision_v5_fixed_window_case_results.csv"
-OUT = Path(__file__).resolve().parent
+
+SOURCE = METRICS_DIR / "revision_v5_fixed_window_case_results.csv"
+OUT = METRICS_DIR
 CACHE = OUT / "native_numeric_coverage_v9_cache"
 BASELINE_SECONDS = 300
 OUTCOME_SECONDS = 600

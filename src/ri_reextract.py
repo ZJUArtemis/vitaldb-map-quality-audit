@@ -24,7 +24,6 @@ import os
 import traceback
 import warnings
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -34,6 +33,7 @@ from pyPPG import PPG
 from pyPPG.fiducials import FpCollection
 from pyPPG.preproc import Preprocess
 
+from project_paths import PROCESSED_DIR, RI_OUTPUT_DIR, VITAL_DIR
 
 FS = 100
 BASELINE_SECONDS = 300
@@ -45,17 +45,8 @@ MAX_RI = 1.30
 MIN_TEMPLATE_CORRELATION = 0.80
 MAX_EXTREME_PLATEAU_FRACTION = 0.12
 
-HERE = Path(__file__).resolve()
-DEFAULT_PROJECT = HERE.parents[1]
-PROJECT = Path(os.environ.get("TOPIC10_PROJECT_ROOT", DEFAULT_PROJECT))
-VITAL_DIR = Path(
-    os.environ.get(
-        "VITALDB_VITAL_DIR",
-        PROJECT.parents[1] / "physionet.org/files/vitaldb/1.0.0/vital_files",
-    )
-)
-OUT = Path(os.environ.get("TOPIC10_OUTPUT_DIR", PROJECT / "outputs" / "ri_v14"))
-INPUT = PROJECT / "data/processed/vascular_features.parquet"
+OUT = RI_OUTPUT_DIR
+INPUT = PROCESSED_DIR / "vascular_features.parquet"
 
 
 def finite_runs(x: np.ndarray, min_samples: int) -> list[tuple[int, int]]:

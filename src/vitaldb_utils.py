@@ -6,7 +6,6 @@ Module: vitaldb_utils.py | Topic: 10 | Purpose: Unified VitalDB data loading uti
 import vitaldb
 import pandas as pd
 import numpy as np
-from pathlib import Path
 import logging
 
 logger = logging.getLogger(__name__)

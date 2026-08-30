@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 """Regenerate the NIBP association figure with source-accurate wording."""
 
-from pathlib import Path
 import json
 
 import matplotlib.pyplot as plt
 
+from project_paths import FIGURES_DIR, METRICS_DIR
 
-ROOT = Path(__file__).resolve().parent
-METRICS = ROOT.parent.parent / "outputs" / "metrics"
-OUTPUT = ROOT / "latex_source" / "fig9_nibp_state"
+OUTPUT = FIGURES_DIR / "fig9_nibp_state"
 
 
 def main() -> None:
+    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     results = json.loads(
-        (METRICS / "revision_nibp_state_association.json").read_text()
+        (METRICS_DIR / "revision_nibp_state_association.json").read_text()
     )
     names = ["ART state", "Clinical", "Clinical +\nART state"]
     keys = ["state_only", "clinical_only", "clinical_plus_state"]

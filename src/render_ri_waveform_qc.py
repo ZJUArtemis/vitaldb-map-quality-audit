@@ -4,8 +4,6 @@
 from __future__ import annotations
 
 import json
-import os
-from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
@@ -15,16 +13,9 @@ import numpy as np
 import pandas as pd
 import vitaldb
 
+from project_paths import RI_OUTPUT_DIR, VITAL_DIR
 
-HERE = Path(__file__).resolve().parent
-PROJECT = Path(os.environ.get("TOPIC10_PROJECT_ROOT", HERE.parent))
-OUT = Path(os.environ.get("TOPIC10_OUTPUT_DIR", PROJECT / "outputs" / "ri_v14"))
-VITAL_DIR = Path(
-    os.environ.get(
-        "VITALDB_VITAL_DIR",
-        PROJECT.parents[1] / "physionet.org/files/vitaldb/1.0.0/vital_files",
-    )
-)
+OUT = RI_OUTPUT_DIR
 FS = 100
 
 

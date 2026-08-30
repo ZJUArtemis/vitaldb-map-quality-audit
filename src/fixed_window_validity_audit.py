@@ -27,7 +27,6 @@ import json
 import math
 import os
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -36,7 +35,6 @@ import vitaldb
 from project_paths import METRICS_DIR, PROCESSED_DIR, VITAL_DIR
 
 
-WORK = Path(__file__).resolve().parents[1]
 PROC = PROCESSED_DIR
 MET = METRICS_DIR
 CACHE = PROC / "revision_v5_case_cache"

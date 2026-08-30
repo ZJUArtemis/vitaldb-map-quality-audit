@@ -3,10 +3,9 @@
 """
 Script: step1_cohort_selection.py | Topic: 10 | Purpose: 队列筛选与纳排标准应用
 """
-import os, sys, json, logging
+import json, logging
 from datetime import datetime
 from pathlib import Path
-import numpy as np
 import pandas as pd
 import vitaldb
 from tqdm import tqdm

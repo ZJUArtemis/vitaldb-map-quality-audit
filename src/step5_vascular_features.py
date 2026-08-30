@@ -3,7 +3,7 @@
 """
 Script: step5_vascular_features.py | Topic: 10 | Purpose: 血管弹性特征提取 (ABP + PPG)
 """
-import os, sys, logging, gc
+import logging, gc
 from datetime import datetime
 from pathlib import Path
 import numpy as np
@@ -149,7 +149,7 @@ def extract_abp_features(abp_signal, fs=500):
             'aix_mean': float(np.mean(aix_vals)) if aix_vals else np.nan,
             'n_beats': len(sbp_vals)
         }
-    except Exception as e:
+    except Exception:
         return None
 
 
@@ -234,7 +234,7 @@ def extract_ppg_features(ppg_signal, height_cm, fs=100):
             'pi': float(pi) if not np.isnan(pi) else np.nan,
             'n_ppg_beats': len(amp_vals)
         }
-    except Exception as e:
+    except Exception:
         return None
 
 

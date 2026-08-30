@@ -8,7 +8,6 @@ Script: step5b_fix_vascular_features.py | Topic: 10 | Purpose: Fix and finalize 
 """
 import logging
 from datetime import datetime
-from pathlib import Path
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA

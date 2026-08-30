@@ -8,7 +8,6 @@ Purpose: Paired bootstrap CIs for delta-AUROC; optimism-corrected AUROC;
 import warnings; warnings.filterwarnings('ignore')
 import numpy as np
 import pandas as pd
-from pathlib import Path
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler

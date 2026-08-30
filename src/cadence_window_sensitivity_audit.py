@@ -5,19 +5,14 @@ from __future__ import annotations
 import argparse
 import json
 import multiprocessing as mp
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import vitaldb
 
-from project_paths import PROJECT_ROOT
+from project_paths import METRICS_DIR, VITAL_DIR
 
-ROOT = PROJECT_ROOT
-PROJECT = ROOT / "analysis/topic10_induction_instability"
-VITAL_DIR = ROOT / "physionet.org/files/vitaldb/1.0.0/vital_files"
-SOURCE = PROJECT / "outputs/metrics/revision_v5_fixed_window_case_results.csv"
-OUT = Path(__file__).resolve().parent / "analysis_outputs"
+SOURCE = METRICS_DIR / "revision_v5_fixed_window_case_results.csv"
+OUT = METRICS_DIR
 CACHE = OUT / "cadence_window_v8_cache"
 
 BASELINES = (60, 120, 180, 300)

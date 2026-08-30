@@ -5,8 +5,6 @@ Script: step8b_tables_shap.py | Topic: 10
 Purpose: Generate Table 1, Table 2, and Fig 6 (SHAP) — standalone
 """
 import warnings; warnings.filterwarnings('ignore')
-from pathlib import Path
-import numpy as np
 import pandas as pd
 import matplotlib; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -64,8 +62,6 @@ def fmt_cat(col, label, val=1):
         v = sub[col].dropna()
         k = (v == val).sum()
         return f'{k} ({100*k/max(len(v),1):.1f}%)'
-    c_ = crash_g[col].dropna()
-    n_ = nocrash_g[col].dropna()
     try:
         ct = pd.crosstab(t1_df[col], t1_df['crash_30'])
         if ct.shape == (2, 2):

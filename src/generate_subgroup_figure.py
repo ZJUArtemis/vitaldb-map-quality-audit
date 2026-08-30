@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """Regenerate the exploratory ARC subgroup forest with canonical seed-0 CIs."""
 
-from pathlib import Path
-import os
-
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -16,10 +13,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-HERE = Path(__file__).resolve()
-DEFAULT_ROOT = HERE.parents[1] if (HERE.parents[1] / "outputs").exists() else HERE.parents[3]
-ROOT = Path(os.environ.get("TOPIC10_PROJECT_ROOT", DEFAULT_ROOT))
-OUT = HERE.parent
+from project_paths import FIGURES_DIR, PROCESSED_DIR
+
+
+OUT = FIGURES_DIR
 CLIN = ["age", "bmi", "asa", "preop_htn", "preop_dm"]
 
 
@@ -34,7 +31,8 @@ def ci(y, p, seed=0):
 
 
 def main():
-    feat = pd.read_parquet(ROOT / "data/processed/vascular_features.parquet")
+    OUT.mkdir(parents=True, exist_ok=True)
+    feat = pd.read_parquet(PROCESSED_DIR / "vascular_features.parquet")
     arc = feat[feat.drop_pct.notna() & np.isfinite(feat.drop_pct) & (feat.drop_pct > -500)].copy()
     train_idx, test_idx = train_test_split(
         arc.index.to_numpy(), test_size=0.30, stratify=arc.crash_30, random_state=42

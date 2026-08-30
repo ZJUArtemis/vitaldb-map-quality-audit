@@ -14,22 +14,14 @@ from __future__ import annotations
 import json
 import os
 from concurrent.futures import ProcessPoolExecutor
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import vitaldb
 
+from project_paths import PROCESSED_DIR, RI_OUTPUT_DIR, VITAL_DIR
 
-HERE = Path(__file__).resolve()
-PROJECT = Path(os.environ.get("TOPIC10_PROJECT_ROOT", HERE.parents[1]))
-OUT = Path(os.environ.get("TOPIC10_OUTPUT_DIR", PROJECT / "outputs" / "ri_v14"))
-VITAL_DIR = Path(
-    os.environ.get(
-        "VITALDB_VITAL_DIR",
-        PROJECT.parents[1] / "physionet.org/files/vitaldb/1.0.0/vital_files",
-    )
-)
+OUT = RI_OUTPUT_DIR
 TRACKS = (
     "Solar8000/NIBP_SBP",
     "Solar8000/NIBP_DBP",
@@ -107,7 +99,7 @@ def count_summary(values: pd.Series) -> dict:
 
 
 def main() -> None:
-    segments = pd.read_parquet(PROJECT / "data/processed/induction_segments.parquet")
+    segments = pd.read_parquet(PROCESSED_DIR / "induction_segments.parquet")
     tasks = [
         (int(row.caseid), float(row.t_start), float(row.t_end))
         for row in segments[["caseid", "t_start", "t_end"]].itertuples(index=False)
@@ -118,7 +110,7 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     result.to_csv(OUT / "nibp_value_states_v14.csv", index=False)
 
-    evaluable = pd.read_parquet(PROJECT / "data/processed/outcome_labels_nibp.parquet")
+    evaluable = pd.read_parquet(PROCESSED_DIR / "outcome_labels_nibp.parquet")
     merged = evaluable.merge(result, on="caseid", how="left")
     both = merged[merged["nibp_baseline"].notna() & merged["nibp_nadir"].notna()].copy()
     summary = {

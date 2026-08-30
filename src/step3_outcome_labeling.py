@@ -3,7 +3,7 @@
 """
 Script: step3_outcome_labeling.py | Topic: 10 | Purpose: 定义并标注 Induction Crash 结局
 """
-import os, sys, json, logging
+import logging
 from datetime import datetime
 from pathlib import Path
 import numpy as np, pandas as pd
@@ -31,7 +31,7 @@ def init_log():
     return lf
 
 def main():
-    log_file = init_log()
+    init_log()
     logging.info("=== Topic 10 Phase 2 Step 1: Outcome Labeling ===")
 
     # Load induction segments

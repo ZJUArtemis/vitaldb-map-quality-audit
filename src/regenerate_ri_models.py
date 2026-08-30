@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import json
-import os
 from pathlib import Path
 
 import matplotlib
@@ -19,13 +18,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
+from project_paths import FIGURES_DIR, PROCESSED_DIR, RI_OUTPUT_DIR
 
-HERE = Path(__file__).resolve().parent
-PROJECT = Path(os.environ.get("TOPIC10_PROJECT_ROOT", HERE.parent))
-OUT = Path(os.environ.get("TOPIC10_OUTPUT_DIR", PROJECT / "outputs" / "ri_v14"))
-PROC = PROJECT / "data/processed"
-LATEX = Path(os.environ.get("TOPIC10_LATEX_DIR", PROJECT / "latex_source"))
-FIG = LATEX / "figures"
+OUT = RI_OUTPUT_DIR
+PROC = PROCESSED_DIR
+FIG = FIGURES_DIR
 SUPPFIG = FIG / "supplementary"
 CLIN = ["age", "bmi", "asa", "preop_htn", "preop_dm"]
 SPECS = {
