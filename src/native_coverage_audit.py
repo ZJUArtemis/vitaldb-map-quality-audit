@@ -145,6 +145,15 @@ def main():
     data["materialised_primary_valid"] = materialised
     data["classification_agreement"] = materialised.eq(native_valid)
 
+    native_pointwise_only = (
+        data["native_baseline_median"].notna()
+        & data["native_outcome_minimum"].notna()
+    )
+    materialised_pointwise_only = (
+        data["lb20_baseline_map"].notna()
+        & data["lb20_nadir_map"].notna()
+    )
+
     comparisons = {}
     for window in ("baseline", "outcome"):
         old = data[f"lb20_observed_{window}"].to_numpy(float)
@@ -187,6 +196,14 @@ def main():
         "classification_agreement_n": int(data["classification_agreement"].sum()),
         "classification_agreement_fraction": float(data["classification_agreement"].mean()),
         "discordant_n": int(len(discordant)),
+        "pointwise_range_only": {
+            "definition": "At least one finite 20--200 mmHg value in each fixed window; no coverage, in-range-fraction, or continuity threshold",
+            "native_n": int(native_pointwise_only.sum()),
+            "native_events": int(data.loc[native_pointwise_only, "native_event30"].sum()),
+            "native_non_events": int(native_pointwise_only.sum() - data.loc[native_pointwise_only, "native_event30"].sum()),
+            "materialised_n": int(materialised_pointwise_only.sum()),
+            "classification_agreement_n": int(native_pointwise_only.eq(materialised_pointwise_only).sum()),
+        },
         "coverage_comparison": comparisons,
         "outcome_continuity_sensitivity": outcome_sensitivity,
     }

@@ -1,4 +1,4 @@
-# Task-Window Validity Audit — v15 Submission Code Release
+# Task-Window Validity Audit — v19 Submission Code Release
 
 This repository accompanies the IEEE Access resubmission titled **“Task-Window
 Validity of Pre-Induction Arterial Pressure for Hypotension Modelling in
@@ -16,14 +16,17 @@ VitalDB source data.
 
 ## Frozen release
 
-- Submission package: v15
-- Repository tag: `ieee-access-resubmission-v15`
-- Scientific analysis generation: v14 (unchanged in v15)
+- Submission package: v19
+- Repository tag: `ieee-access-resubmission-v19`
+- Scientific analysis generation: v14, with the v19 pointwise-only comparison
+  calculated from the same frozen native-record audit
 
 Headline results reported in the manuscript (for context only; the files
 carrying them are generated locally, not distributed here):
 
 - Primary source cohort: 926 RI-inclusive cases
+- Pointwise-only 20–200 mmHg screen: 55/926 cases with at least one
+  range-plausible value in each fixed window
 - Primary task-valid subset: 8/926 (4 events, 4 non-events)
 - Native-record validation: 8/926; 926/926 classification agreement
 - PPG-free arterial-source sensitivity: 13/996 (5 events, 8 non-events)
@@ -70,8 +73,8 @@ python -m pip install -r requirements-full.txt
 `requirements-core.txt` and `requirements-full.txt` specify portable minimum
 versions. `environment-lock-v14.txt` records the exact package versions in the
 Python 3.10.19 environment used for the frozen v14 scientific verification;
-the v15 release changes documentation and a non-computational status message,
-not any analysis. Hardware- or
+the v19 release adds only the direct pointwise-only comparison to the native
+coverage summary; all other analyses remain unchanged. Hardware- or
 index-specific build suffixes are recorded for provenance and need not be
 reproduced when compatible wheels are unavailable.
 

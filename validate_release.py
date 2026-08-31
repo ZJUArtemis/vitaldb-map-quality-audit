@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Hygiene and portability gate for the code-only v15 release.
+"""Hygiene and portability gate for the code-only v19 release.
 
 This validator checks archive structure only. It performs no scientific
 result assertions because no result files are distributed; manuscript
@@ -206,11 +206,11 @@ def main() -> None:
     readme = (ROOT / "README.md").read_text()
     assert "requirements-core.txt" in readme and "requirements-full.txt" in readme
     assert "environment-lock-v14.txt" in readme
-    assert "ieee-access-resubmission-v15" in readme
+    assert "ieee-access-resubmission-v19" in readme
     assert "gap-aware" in readme and "same-pulse" in readme
     assert "code-only release" in readme.lower()
     assert "primary task-window validity audit can be regenerated" in readme.lower()
-    print("Code-only v15 release validation: PASS")
+    print("Code-only v19 release validation: PASS")
 
 
 if __name__ == "__main__":

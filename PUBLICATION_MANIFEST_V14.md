@@ -11,7 +11,7 @@ record.
 | Publication item | Authoritative script | Principal input | Locally generated output |
 |---|---|---|---|
 | Main task-validity counts and complete 192-definition grid | `fixed_window_validity_audit.py` | eligible IDs + raw `.vital` files | `revision_v5_fixed_window_summary.json`, `revision_v5_threshold_grid.csv`, `revision_v5_fixed_window_case_results.csv` |
-| Native coverage and outcome-continuity verification | `native_coverage_audit.py` | fixed-window case results + native ART_MBP records | `native_numeric_coverage_summary_v9.json`, `outcome_continuity_sensitivity_v9.csv` |
+| Native coverage, pointwise-only comparison, and outcome-continuity verification | `native_coverage_audit.py` | fixed-window case results + native ART_MBP records | `native_numeric_coverage_summary_v9.json`, `outcome_continuity_sensitivity_v9.csv` |
 | PPG-free arterial-source sensitivity | `broader_arterial_cohort_audit.py` | track availability + fixed-window case results + raw `.vital` files | `broader_arterial_cohort_summary_v9.json` |
 | Raw ART/FEM sensitivity | `fixed_window_validity_audit.py`, `fem_waveform_audit.py` | fixed-window case results + raw ART/FEM waveforms | `fem_waveform_v7_summary.json`, `fem_waveform_v7_case_results.csv` |
 | Window-length sensitivity | `cadence_window_sensitivity_audit.py` | fixed-window case results + raw `.vital` files | `window_length_sensitivity_v8.csv`, `cadence_window_v8_summary.json` |
