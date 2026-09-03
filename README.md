@@ -1,108 +1,83 @@
-# Task-Window Validity Audit — v19 Submission Code Release
+# Task-Window Validity Audit — Minimal Code Release
 
-This repository accompanies the IEEE Access resubmission titled **“Task-Window
-Validity of Pre-Induction Arterial Pressure for Hypotension Modelling in
-VitalDB.”** The primary contribution is an empirical task-feasibility audit,
-not a new preprocessing algorithm and not a deployable prediction model.
+This repository contains the Python source code used for the VitalDB
+propofol-anchored arterial-pressure task-window validity audit. The primary
+contribution is an empirical task-feasibility analysis, not a new preprocessing
+algorithm and not a deployable prediction model.
 
-This is a **code-only release**. It contains the analysis source code,
-reproducibility documentation, dependency specifications, and the minimal
-de-identified cohort-reconstruction metadata (public VitalDB case identifiers
-and track-availability flags). It intentionally does **not** contain figures,
-result tables, raw `.vital` waveforms, patient-level feature tables, outcome
-tables, model weights, logs, or caches. Every numerical result in the
-manuscript is regenerated locally by running the scripts below against public
-VitalDB source data.
+## What is included
 
-## Frozen release
+- The complete staged Python analysis workflow in `src/`;
+- portable project-path and VitalDB loading utilities;
+- this README and the MIT license;
+- one complete dependency specification in `requirements.txt`.
 
-- Submission package: v19
-- Repository tag: `ieee-access-resubmission-v19`
-- Scientific analysis generation: v14, with the v19 pointwise-only comparison
-  calculated from the same frozen native-record audit
+This is a deliberately minimal **code-only release**. It does not distribute
+raw VitalDB waveforms, cohort metadata, patient-level physiological data,
+feature tables, outcome tables, generated metrics, figures, model weights,
+logs, caches, archives, or other analysis outputs. The manuscript's numerical
+results must therefore be regenerated locally after the user obtains the
+public VitalDB source data.
 
-Headline results reported in the manuscript (for context only; the files
-carrying them are generated locally, not distributed here):
+## Data prerequisite and paths
 
-- Primary source cohort: 926 RI-inclusive cases
-- Pointwise-only 20–200 mmHg screen: 55/926 cases with at least one
-  range-plausible value in each fixed window
-- Primary task-valid subset: 8/926 (4 events, 4 non-events)
-- Native-record validation: 8/926; 926/926 classification agreement
-- PPG-free arterial-source sensitivity: 13/996 (5 events, 8 non-events)
-- FEM sensitivity: 16 FEM-only metadata candidates; two local raw FEM
-  waveforms; neither supplied a plausible pulsatile baseline second
-- Corrected RI: 817/909 cases from 136,068 gap-aware same-pulse beats;
-  median 0.297 [IQR 0.236–0.364]
-- Corrected RI incremental AUROC: ARC −0.015; NIBP reference +0.004
-
-Some generated output filenames retain historical suffixes such as
-`revision_v5_...` or `..._v14`; these identify the frozen analysis generation
-in which a computation was introduced and keep locally generated outputs
-byte-comparable with the archived submission record. Script filenames in
-`src/` are semantic and unversioned.
-
-## Data prerequisites
-
-VitalDB is public but raw `.vital` files are not redistributed here. Set:
+VitalDB raw `.vital` files must be obtained independently from the public
+VitalDB release. Do not place raw data under version control. Configure a
+local data directory and project root before running scripts:
 
 ```sh
-export VITALDB_VITAL_DIR=/absolute/path/to/vital_files
-export TOPIC10_PROJECT_ROOT=/absolute/path/to/this/repository
+export VITALDB_VITAL_DIR=./vitaldb_data
+export TOPIC10_PROJECT_ROOT=.
 ```
 
-`TOPIC10_PROJECT_ROOT` defaults to this repository and `VITALDB_VITAL_DIR`
-defaults to `vitaldb_data/` beneath it. Every public script resolves paths
-through `src/project_paths.py`; no script depends on an author-specific
-absolute path.
+`VITALDB_VITAL_DIR` defaults to `vitaldb_data/` beneath the repository. The
+scripts resolve project paths through `src/project_paths.py` and do not depend
+on an author-specific absolute path. Raw data are read-only inputs; scripts
+must not modify `.vital` files.
 
-Install the core dependencies for the fixed-window, native-record, waveform,
-and publication-metric audits with:
+## Installation
+
+Use a supported Python environment and install the complete dependency set:
 
 ```sh
-python -m pip install -r requirements-core.txt
+python -m pip install -r requirements.txt
 ```
 
-To run every legacy model, SHAP, vascular-feature, and sensitivity script,
-install the complete environment instead:
-
-```sh
-python -m pip install -r requirements-full.txt
-```
-
-`requirements-core.txt` and `requirements-full.txt` specify portable minimum
-versions. `environment-lock-v14.txt` records the exact package versions in the
-Python 3.10.19 environment used for the frozen v14 scientific verification;
-the v19 release adds only the direct pointwise-only comparison to the native
-coverage summary; all other analyses remain unchanged. Hardware- or
-index-specific build suffixes are recorded for provenance and need not be
-reproduced when compatible wheels are unavailable.
+The requirements file includes dependencies for the primary audits, waveform
+processing, corrected Reflection Index extraction, NIBP analyses, legacy
+feature/model analyses, and optional local figure generation.
 
 ## Staged workflow
 
-The pipeline is staged: several scripts consume intermediate tables written by
-earlier scripts. None of these intermediates are distributed; run the stages in
-order.
+The scripts are staged because later analyses consume intermediate files
+created by earlier stages. Generated files are local working products and are
+ignored by `.gitignore`.
 
-**Stage 1 — primary audits directly from raw VitalDB files:**
+### Stage 1 — primary task-window audit
 
 ```sh
 python src/fixed_window_validity_audit.py --workers 4
 ```
 
-This writes `outputs/metrics/revision_v5_fixed_window_case_results.csv` and
-the fixed-window summary/threshold grid, which the remaining audits require.
+This performs the propofol-anchored fixed-window numeric/raw audit and writes
+local case-level and summary outputs. The fixed windows are operationally
+anchored to the first positive propofol-rate observation.
 
-**Stage 2 — verification and sensitivity audits:**
+### Stage 2 — coverage and source sensitivities
 
 ```sh
 python src/native_coverage_audit.py --workers 4
 python src/broader_arterial_cohort_audit.py --workers 4
 python src/fem_waveform_audit.py --workers 4
+python src/fem_mbp_source_sensitivity.py
 python src/cadence_window_sensitivity_audit.py
 ```
 
-**Stage 3 — corrected Reflection Index extraction and integrity checks:**
+These scripts perform native-record validation, pointwise-only comparison,
+PPG-free arterial-source sensitivity, ART/FEM waveform sensitivity, FEM_MBP
+numeric-source completeness sensitivity, and cadence/window sensitivity.
+
+### Stage 3 — corrected Reflection Index analysis
 
 ```sh
 python src/ri_reextract.py
@@ -110,9 +85,16 @@ python src/validate_ri_release.py
 python src/render_ri_waveform_qc.py
 ```
 
-**Stage 4 — models and publication metrics** (require the legacy
-feature/outcome tables regenerated by the `step*` pipeline below and the RI
-tables from Stage 3):
+The corrected RI workflow is gap-aware, same-pulse, and foot-referenced.
+`validate_ri_release.py` is an analysis integrity script in `src/`; it is not
+a release-package validator.
+
+### Stage 4 — downstream models and publication metrics
+
+The legacy feature and outcome tables must first be regenerated locally with
+the numbered `step*` scripts. They are patient-level intermediate products
+and are intentionally not included here. After those prerequisites exist,
+run the relevant downstream analyses:
 
 ```sh
 python src/regenerate_ri_models.py
@@ -121,78 +103,43 @@ python src/generate_nibp_metrics.py
 python src/nibp_sampling_audit.py
 ```
 
-**Release hygiene gate:**
+Additional pipeline, sensitivity, stability, consequence, and optional figure
+scripts are documented by their module docstrings and source code:
 
-```sh
-python validate_release.py
-```
-
-The full raw-waveform audit is computationally intensive. Case-level caches are
-written outside the raw-data directory. No script modifies `.vital` files.
-
-## Contents
-
-Primary audits and verification:
-
-- `src/fixed_window_validity_audit.py`: propofol-anchored fixed-window
-  numeric/raw audit (primary result; generates the case-results table used by
-  the audits below).
-- `src/native_coverage_audit.py`: direct native-record coverage and
-  outcome-continuity validation.
-- `src/broader_arterial_cohort_audit.py`: PPG-free arterial-source sensitivity.
-- `src/fem_waveform_audit.py`: ART/FEM site-combined waveform sensitivity.
-- `src/cadence_window_sensitivity_audit.py`: cadence accounting and
-  task-window-length sensitivity.
-
-Corrected Reflection Index (gap-aware, same-pulse, foot-referenced):
-
-- `src/ri_reextract.py`: canonical corrected RI extraction.
-- `src/validate_ri_release.py`: synthetic-gap and case/beat integrity tests.
-- `src/render_ri_waveform_qc.py`: deterministic 30-case/180-beat visual
-  implementation audit (local PDF/PNG output).
-
-Models and publication metrics:
-
-- `src/regenerate_ri_models.py`: corrected-RI ARC, complete-case, noisy-label,
-  NIBP, repeated-split, and aggregate result generation.
-- `src/generate_canonical_metrics.py`: canonical legacy aggregate metrics and
-  supplementary ROC/threshold outputs.
-- `src/generate_nibp_metrics.py`: canonical NIBP held-out metrics and paired
-  delta-AUROC intervals.
-- `src/nibp_sampling_audit.py`: distinct plausible NIBP value-state
-  sampling audit.
-- `src/generate_subgroup_figure.py`, `src/regenerate_nibp_reference_figure.py`,
-  `src/step13_fig3_arc_nested_roc.py`: optional local figure rendering.
-
-Legacy consequence pipeline (`step*` prefix denotes pipeline order):
-
-- `src/step1_cohort_selection.py` … `src/step8b_tables_shap.py`: cohort
-  selection, induction segmentation, outcome labelling, vascular features,
-  risk modelling, sensitivity analysis, and SHAP tables.
-- `src/step11_nibp_corrected.py`: separately recorded NIBP reference within
-  VitalDB.
-- `src/step12_repeated_split_stability.py`: repeated-split stability.
-- `src/arc_consequence_analysis.py`, `src/internal_validation_analysis.py`:
-  ARC consequence and internal-validation estimates.
-
-Shared infrastructure and metadata:
-
-- `src/project_paths.py`: portable path configuration (single path authority).
-- `src/vitaldb_utils.py`: shared VitalDB loading utilities.
-- `outputs/metrics/eligible_caseids.csv`,
-  `outputs/metrics/track_availability.csv`,
-  `outputs/metrics/cohort_flowchart_numbers.json`: de-identified public
-  VitalDB case identifiers, per-case track-availability flags, and aggregate
-  cohort flowchart counts — the only data files distributed.
-- `PUBLICATION_MANIFEST_V14.md`: script → inputs → locally generated outputs
-  provenance map.
+- `step1_cohort_selection.py` through `step8b_tables_shap.py`: cohort,
+  induction, outcome, vascular-feature, modelling, sensitivity, and SHAP
+  stages;
+- `step11_nibp_corrected.py` and `step12_repeated_split_stability.py`:
+  NIBP and stability analyses;
+- `arc_consequence_analysis.py`, `internal_validation_analysis.py`, and
+  `step13_fig3_arc_nested_roc.py`: consequence and validation analyses;
+- `generate_subgroup_figure.py` and
+  `regenerate_nibp_reference_figure.py`: optional local figure generation.
 
 ## Reproducibility boundary
 
-The primary task-window validity audit can be regenerated from public VitalDB
-source data using the included case identifiers and scripts. Legacy
-consequence and model analyses additionally require regeneration of derived
-feature and outcome tables using the supplied `step*` pipeline; those derived
-tables contain patient-level values and are never distributed. All generated
-outputs are written under `outputs/`, `data/processed/`, and `results/`, all
-of which are git-ignored.
+The primary task-window audit can be regenerated from public VitalDB source
+data using the included scripts. Downstream consequence and model analyses
+also require locally generated feature and outcome tables from the staged
+pipeline. These intermediate tables contain patient-level values and are not
+distributed in this repository.
+
+The repository intentionally contains no frozen result files. Any output
+reported from a local rerun should be treated as locally generated and checked
+against the user's VitalDB version, software environment, and analysis
+configuration.
+
+## Source layout
+
+```text
+.
+├── src/                 # Python analysis source and shared utilities
+├── README.md            # This document
+├── LICENSE              # MIT license
+├── requirements.txt     # Complete portable dependency set
+└── .gitignore           # Excludes raw data and generated products
+```
+
+## License
+
+Released under the MIT License; see `LICENSE`.

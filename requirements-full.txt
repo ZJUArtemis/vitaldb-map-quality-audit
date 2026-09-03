@@ -1,6 +1,0 @@
--r requirements-core.txt
-neurokit2>=0.2
-xgboost>=1.7
-shap>=0.42
-torch>=1.12
-ruptures>=1.1

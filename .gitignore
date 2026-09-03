@@ -12,20 +12,14 @@ __pycache__/
 env/
 .ipynb_checkpoints/
 
-# Locally generated analysis outputs (regenerated from public VitalDB data)
+# Locally generated analysis outputs
+outputs/
 results/
 data/
 figures/
-outputs/logs/
-outputs/figures/
-outputs/ri_v14/
-outputs/configs/
-outputs/metrics/*
-!outputs/metrics/eligible_caseids.csv
-!outputs/metrics/track_availability.csv
-!outputs/metrics/cohort_flowchart_numbers.json
 analysis_outputs/
-latex_source/
+
+# Local raw-data directory
 vitaldb_data/
 
 # Local tooling
