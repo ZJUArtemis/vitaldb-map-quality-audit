@@ -88,13 +88,16 @@ log.info(f"Loaded {len(seg)} induction segments")
 
 rows = []
 for _, r in tqdm(seg.iterrows(), total=len(seg), desc="NIBP outcomes"):
-    cid, t0, t1 = int(r['caseid']), r['t_start'], r['t_end']
+    cid, t0 = int(r['caseid']), r['t_start']
     arr, native_base_n = load_nibp_1hz(cid, t0)
     if arr is None:
         rows.append(dict(caseid=cid, nibp_baseline=np.nan, nibp_nadir=np.nan,
                          n_base=0, n_nadir=0, native_baseline_readings=0)); continue
     base, nb = win_stat(arr, t0 - BASELINE_SECS, t0, np.median)
-    nadir, nn = win_stat(arr, t0, min(t0 + INDUCTION_SECS, t1), np.min)
+    # Use the fixed 600-s post-anchor window directly. In the frozen source
+    # segments, every historical t_end was t0+1200 s, so this explicit
+    # decoupling from t_end does not change any reported NIBP result.
+    nadir, nn = win_stat(arr, t0, t0 + INDUCTION_SECS, np.min)
     rows.append(dict(caseid=cid, nibp_baseline=base, nibp_nadir=nadir,
                      n_base=nb, n_nadir=nn, native_baseline_readings=native_base_n))
 

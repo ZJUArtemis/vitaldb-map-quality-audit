@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Script: arc_consequence_analysis.py | Topic: 10
-Purpose: Compute CIs for validity-indicator, complete-case, full-cohort analyses;
+Purpose: Compute CIs for validity-indicator, PPG-feature-observed, full-cohort analyses;
          validity threshold sensitivity (10/20/30 mmHg);
          baseline/nadir MAP distribution figure for manuscript v5.
 """
@@ -109,10 +109,10 @@ print("\n=== VALIDITY THRESHOLD SENSITIVITY ===")
 for thr, col in [(10,'map_valid_10'), (15,'map_valid_15'), (20,'map_valid_20'), (30,'map_valid_30')]:
     run_model(CLIN+[col], tr, te, y_tr, y_te, f"Mv threshold={thr}mmHg", compute_ci=True)
 
-print("\n=== COMPLETE-CASE ANALYSIS ===")
+print("\n=== PPG-FEATURE-OBSERVED ANALYSIS ===")
 cc = arc[arc['baseline_map'].notna() & arc['ri_mean_clean'].notna() & arc['ppg_amp_clean'].notna()].copy()
 y_cc = cc['crash_30'].values
-print(f"Complete-case: N={len(cc)}, events={y_cc.sum()}, rate={y_cc.mean():.3f}")
+print(f"PPG-feature-observed: N={len(cc)}, events={y_cc.sum()}, rate={y_cc.mean():.3f}")
 
 X_cc_idx = cc.index.values
 X_cc_tr, X_cc_te = train_test_split(X_cc_idx, test_size=0.30, stratify=y_cc, random_state=42)

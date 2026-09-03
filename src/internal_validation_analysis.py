@@ -88,8 +88,8 @@ for label, a, b in pairs:
     print(f"  {label}: point={point:+.3f}, boot mean={mean_d:+.3f}, 95% CI [{lo:+.3f}, {hi:+.3f}]")
     delta_results[label] = (point, lo, hi)
 
-# ── Complete-case paired bootstrap ───────────────────────────────────────────
-print("\n=== COMPLETE-CASE PAIRED BOOTSTRAP ===")
+# ── RI-and-amplitude-observed paired bootstrap ───────────────────────────────
+print("\n=== RI-AND-AMPLITUDE-OBSERVED PAIRED BOOTSTRAP ===")
 cc = arc[arc['ri_mean_clean'].notna() & arc['ppg_amp_clean'].notna()].copy()
 y_cc = cc['crash_30'].values
 X_cc_tr, X_cc_te = train_test_split(cc.index.values, test_size=0.30, stratify=y_cc, random_state=42)
@@ -154,7 +154,7 @@ rows = []
 for vname, col in [('baseline MAP','baseline_map'),('RI','ri_mean_clean'),('PPG amplitude','ppg_amp_clean'),
                    ('ASA','asa'),('Age','age'),('BMI','bmi')]:
     r = {'Variable': vname}
-    for name, df in [('Full cohort (N=909)',full_c),('ARC (N=528)',arc_c),('Complete-case (N=391)',cc_c)]:
+    for name, df in [('Full cohort (N=909)',full_c),('ARC (N=528)',arc_c),('RI-and-amplitude observed (N=391)',cc_c)]:
         n_m = df[col].isna().sum()
         r[name] = f"{n_m} ({n_m/len(df)*100:.1f}%)" if n_m>0 else "0"
     rows.append(r)

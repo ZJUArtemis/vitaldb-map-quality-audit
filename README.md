@@ -5,12 +5,17 @@ propofol-anchored arterial-pressure task-window validity audit. The primary
 contribution is an empirical task-feasibility analysis, not a new preprocessing
 algorithm and not a deployable prediction model.
 
+## Frozen release
+
+- Submission package: v28
+- Repository tag: `ieee-access-resubmission-v21`
+
 ## What is included
 
 - The complete staged Python analysis workflow in `src/`;
 - portable project-path and VitalDB loading utilities;
 - this README and the MIT license;
-- one complete dependency specification in `requirements.txt`.
+- one portable dependency list in `requirements.txt`.
 
 This is a deliberately minimal **code-only release**. It does not distribute
 raw VitalDB waveforms, cohort metadata, patient-level physiological data,
@@ -37,7 +42,7 @@ must not modify `.vital` files.
 
 ## Installation
 
-Use a supported Python environment and install the complete dependency set:
+Use a supported Python environment and install the dependency list:
 
 ```sh
 python -m pip install -r requirements.txt
@@ -52,6 +57,15 @@ feature/model analyses, and optional local figure generation.
 The scripts are staged because later analyses consume intermediate files
 created by earlier stages. Generated files are local working products and are
 ignored by `.gitignore`.
+
+### Stage 0 — cohort bootstrap
+
+```sh
+python src/step1_cohort_selection.py
+```
+
+This reconstructs the executable track-level cohort locally and writes the
+`eligible_caseids.csv` prerequisite consumed by the fixed-window audits.
 
 ### Stage 1 — primary task-window audit
 
@@ -77,7 +91,19 @@ These scripts perform native-record validation, pointwise-only comparison,
 PPG-free arterial-source sensitivity, ART/FEM waveform sensitivity, FEM_MBP
 numeric-source completeness sensitivity, and cadence/window sensitivity.
 
-### Stage 3 — corrected Reflection Index analysis
+### Stage 3 — feature-table prerequisites
+
+The corrected RI and downstream analyses require locally generated induction,
+outcome, and vascular-feature tables. Generate them in this order:
+
+```sh
+python src/step2_induction_segmentation.py
+python src/step3_outcome_labeling.py
+python src/step5_vascular_features.py
+python src/step5b_fix_vascular_features.py
+```
+
+### Stage 4 — corrected Reflection Index analysis
 
 ```sh
 python src/ri_reextract.py
@@ -89,12 +115,9 @@ The corrected RI workflow is gap-aware, same-pulse, and foot-referenced.
 `validate_ri_release.py` is an analysis integrity script in `src/`; it is not
 a release-package validator.
 
-### Stage 4 — downstream models and publication metrics
+### Stage 5 — downstream models and publication metrics
 
-The legacy feature and outcome tables must first be regenerated locally with
-the numbered `step*` scripts. They are patient-level intermediate products
-and are intentionally not included here. After those prerequisites exist,
-run the relevant downstream analyses:
+After the Stage 3 prerequisites exist, run the relevant downstream analyses:
 
 ```sh
 python src/regenerate_ri_models.py
@@ -136,7 +159,7 @@ configuration.
 ├── src/                 # Python analysis source and shared utilities
 ├── README.md            # This document
 ├── LICENSE              # MIT license
-├── requirements.txt     # Complete portable dependency set
+├── requirements.txt     # Portable dependency list
 └── .gitignore           # Excludes raw data and generated products
 ```
 

@@ -227,7 +227,7 @@ def plot_ri_audit(ri: pd.DataFrame, target: Path) -> None:
     axes[0].hist(old, bins=35, color="#999999", alpha=0.85)
     axes[0].set(xlabel="Historical RI", ylabel="Cases", title="A  Historical implementation")
     axes[1].hist(new, bins=35, color="#0072B2", alpha=0.85)
-    axes[1].set(xlabel="Corrected same-pulse RI", ylabel="Cases", title="B  v14 implementation")
+    axes[1].set(xlabel="Corrected same-pulse RI", ylabel="Cases", title="B  Corrected implementation")
     fig.tight_layout()
     fig.savefig(target.with_suffix(".pdf"))
     fig.savefig(target.with_suffix(".png"), dpi=300)
@@ -246,9 +246,11 @@ def main() -> None:
 
     arc = feat[feat["drop_pct"].notna() & np.isfinite(feat["drop_pct"]) & (feat["drop_pct"] > -500)].copy()
     arc_result = fit_split(arc, SPECS)
-    complete = arc[arc["ri_mean_clean"].notna() & arc["ppg_amp_clean"].notna()].copy()
+    observed_features = arc[
+        arc["ri_mean_clean"].notna() & arc["ppg_amp_clean"].notna()
+    ].copy()
     cc_specs = {k: SPECS[k] for k in ("M0", "M1", "M3", "M4")}
-    complete_result = fit_split(complete, cc_specs)
+    observed_feature_result = fit_split(observed_features, cc_specs)
 
     noisy = feat.copy()
     noisy["crash_30"] = noisy["crash_30"].fillna(0).astype(int)
@@ -273,7 +275,7 @@ def main() -> None:
         "version": "v14",
         "ri_definition": "same-pulse foot-referenced median RI",
         "arc": strip_arrays(arc_result),
-        "complete_case": strip_arrays(complete_result),
+        "ri_and_amplitude_observed": strip_arrays(observed_feature_result),
         "noisy_label_reference": strip_arrays(noisy_result),
         "nibp_reference": strip_arrays(nibp_result),
         "repeated_splits": {
