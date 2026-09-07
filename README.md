@@ -5,10 +5,9 @@ propofol-anchored arterial-pressure task-window validity audit. The primary
 contribution is an empirical task-feasibility analysis, not a new preprocessing
 algorithm and not a deployable prediction model.
 
-## Frozen release
+## Submission correspondence
 
-- Submission package: v31
-- Repository tag: `ieee-access-resubmission-v22`
+- Submission package: v32
 
 ## What is included
 
