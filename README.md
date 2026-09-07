@@ -7,8 +7,8 @@ algorithm and not a deployable prediction model.
 
 ## Frozen release
 
-- Submission package: v28
-- Repository tag: `ieee-access-resubmission-v21`
+- Submission package: v31
+- Repository tag: `ieee-access-resubmission-v22`
 
 ## What is included
 
@@ -151,6 +151,12 @@ The repository intentionally contains no frozen result files. Any output
 reported from a local rerun should be treated as locally generated and checked
 against the user's VitalDB version, software environment, and analysis
 configuration.
+
+The audit evaluates whether the observed arterial-pressure tracks provide
+physiologically plausible measurement support across the prespecified task
+windows. VitalDB does not provide a validated arterial-catheter connection
+timestamp; the analysis therefore does not infer the exact time of catheter
+placement, connection, zeroing, or levelling.
 
 ## Source layout
 
