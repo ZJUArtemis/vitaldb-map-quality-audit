@@ -140,9 +140,6 @@ random seeds, model formulas, feature-table filenames or clinical cohort
 filters. All scripts passed syntax parsing; local import/file dependencies
 were checked; hard-coded author/system paths were absent. These checks do not
 constitute a full raw-data reproduction of the published numerical results.
-The code origin and cleanup are recorded in `RELEASE.json`; file fingerprints
-are in `CHECKSUMS_SHA256.txt`.
-
 ## Citation
 
 If you use this code in your research, please cite:
