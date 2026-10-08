@@ -1,0 +1,28 @@
+# Public-release hygiene — never distribute raw or patient-level data
+*.vital
+*.parquet
+*.pkl
+*.pth
+*.ckpt
+*.log
+*.pyc
+*.pyo
+__pycache__/
+.venv/
+env/
+.ipynb_checkpoints/
+
+# Locally generated analysis outputs
+outputs/
+results/
+data/
+figures/
+analysis_outputs/
+
+# Local raw-data directory
+vitaldb_data/
+
+# Local tooling
+.DS_Store
+.coverage
+.pytest_cache/
